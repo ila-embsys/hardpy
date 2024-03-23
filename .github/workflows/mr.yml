@@ -1,4 +1,4 @@
-name: Merge Request
+name: Merge Checks
 
 on:
   pull_request:
