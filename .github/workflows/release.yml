@@ -6,8 +6,44 @@ on:
       - "*"
 
 jobs:
+  git-tag-check:
+    name: Git Tag Check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      # This is the version of the action for setting up Python, not the Python version.
+      uses: actions/setup-python@v4
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x'
+        # Optional - x64 or x8
+        architecture: 'x64'
+        cache: 'pip' # caching pip dependencies
+    - name: Install dependencies
+      run: python -m pip install toml
+    - name: Check Git Tag
+      run: |
+        python <<HEREDOC
+        from pathlib import Path
+        import toml
+        import sys
+        
+        gitversion = '${{ vars.GITHUB_REF_NAME }}'
+        version = "unknown"
+        pyproject_toml_file = Path(__file__).parent / "pyproject.toml"
+        if pyproject_toml_file.exists() and pyproject_toml_file.is_file():
+            data = toml.load(pyproject_toml_file)
+            if "project" in data and "version" in data["project"]:
+                version = data["project"]["version"]
+
+        if version != gitversion:
+          sys.exit(f"Git Tag '{gitversion}' doesn't match package version '{version}'")
+        HEREDOC
+
   build:
     name: Build
+    needs: [git-tag-check]
     uses: ./.github/workflows/build.yml  # use the callable tests job to run tests
 
   github-release:
