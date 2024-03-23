@@ -8,9 +8,12 @@ on:
 
 jobs:
   lint:
+    name: Lint
     uses: ./.github/workflows/lint.yml
   test:
+    name: Test
     uses: ./.github/workflows/test.yml
   build:
+    name: Build
     uses: ./.github/workflows/build.yml
 
