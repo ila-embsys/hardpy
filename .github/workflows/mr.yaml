@@ -1,0 +1,12 @@
+name: Merge Request
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+  test:
+    uses: ./.github/workflows/test.yml
+  build:
+    uses: ./.github/workflows/build.yml
