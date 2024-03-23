@@ -12,7 +12,7 @@ jobs:
 
   github-release:
     needs: [build]  # require tests to pass before deploy runs
-    name: Release
+    name: GitHub Upload
     runs-on: ubuntu-latest
 
     permissions:
@@ -51,7 +51,7 @@ jobs:
         --repo '${{ github.repository }}'
 
   publish-to-testpypi:
-    name: Publish
+    name: PyPi Publish
     needs:
     - build
     runs-on: ubuntu-latest

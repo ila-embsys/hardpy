@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   flake8_py3:
-    name: Flake8 Linter
+    name: Flake8
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
