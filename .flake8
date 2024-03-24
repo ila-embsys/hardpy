@@ -1,5 +1,5 @@
 [flake8]
-format = wemake
+; format = wemake
 show-source = True
 
 # See all codes at
