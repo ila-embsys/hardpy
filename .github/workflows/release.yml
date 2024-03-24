@@ -10,9 +10,6 @@ jobs:
     name: Git Tag Check
     runs-on: ubuntu-latest
     steps:
-    - name: Check branch is main
-      if: endsWith(github.ref, 'main') == false
-      run: exit -1
     - uses: actions/checkout@v4
     - name: Set up Python
       # This is the version of the action for setting up Python, not the Python version.
