@@ -37,17 +37,25 @@ jobs:
         # Optional - x64 or x8
         architecture: 'x64'
         cache: 'pip' # caching pip dependencies
-    - name: Install dependencies
-      run: python -m pip install .[build] pytest-md pytest-emoji
+    # - name: Install dependencies
+    #   run: python -m pip install .[build] pytest-md pytest-emoji
 
-    - name: Run pytest
-      uses: pavelzw/pytest-action@v2
+    # - name: Run pytest
+    #   uses: pavelzw/pytest-action@v2
+    #   env:
+    #     COUCH_DB_HOST: localhost
+    #   with:
+    #     verbose: true
+    #     emoji: true
+    #     job-summary: true
+    #     custom-arguments: '--hardpy-dbh ${COUCH_DB_HOST} tests'
+    #     click-to-expand: true
+    #     report-title: 'Test Report'
+
+    - name: Run PyTest
+      uses: dariocurr/pytest-summary@main
       env:
         COUCH_DB_HOST: localhost
       with:
-        verbose: true
-        emoji: true
-        job-summary: true
-        custom-arguments: '--hardpy-dbh ${COUCH_DB_HOST} tests'
-        click-to-expand: true
-        report-title: 'Test Report'
+        options: --hardpy-dbh ${COUCH_DB_HOST} tests
+        show: "fail, skip, pass"
