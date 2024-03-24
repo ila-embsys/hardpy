@@ -69,3 +69,4 @@ app.mount(
     StaticFiles(directory=(os.path.dirname(__file__))+'/frontend/dist', html=True),
     name="static",
 )
+
