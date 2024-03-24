@@ -52,6 +52,9 @@ jobs:
     #     click-to-expand: true
     #     report-title: 'Test Report'
 
+    - name: Install dependencies
+      run: python -m pip install .
+
     - name: Run PyTest
       uses: dariocurr/pytest-summary@main
       env:
