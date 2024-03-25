@@ -45,9 +45,14 @@ jobs:
           sys.exit(f"Git Tag '{gitversion}' doesn't match package version '{version}'")
         HEREDOC
 
+  test:
+    name: Test
+    needs: [git-tag-check]
+    uses: ./.github/workflows/test.yml
+
   build:
     name: Build
-    needs: [git-tag-check]
+    needs: [test]
     uses: ./.github/workflows/build.yml  # use the callable tests job to run tests
 
   github-release:
