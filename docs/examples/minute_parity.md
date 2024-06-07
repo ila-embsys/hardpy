@@ -10,7 +10,8 @@ This is an example of using **pytest-hardpy** functions, storing the result to C
 
 ### pytest.ini
 
-It is a file of built-in configuration options that determine how live logging works.
+It is a file of built-in configuration options that determine how live logging works and 
+enable **pytest-hardpy** plugin for launching via pytest.
 
 ```ini
 [pytest]
@@ -18,13 +19,13 @@ log_cli = true
 log_cli_level = INFO
 log_cli_format = %(asctime)s [%(levelname)s] %(message)s
 log_cli_date_format = %H:%M:%S
+addopts = --hardpy-pt
 ```
 
 ### conftest.py
 
 Contains settings and fixtures for all tests:
 
-- Registering the HardPy plugin in pytest_configure;
 - The function of generating a report and recording it in the database `finish_executing`;
 - The example of devices used as a fixture in `driver_example`;
 - The list of actions that will be performed after testing is filled in function `fill_actions_after_test`;
@@ -35,15 +36,11 @@ import logging
 import pytest
 
 from hardpy import (
-    HardpyPlugin,
     CouchdbLoader,
     CouchdbConfig,
     get_current_report,
 )
 from driver_example import DriverExample
-
-def pytest_configure(config: pytest.Config):
-    config.pluginmanager.register(HardpyPlugin())
 
 @pytest.fixture(scope="module")
 def module_log(request):
@@ -160,6 +157,9 @@ Contains the final tests of the testing process:
 - The name of the test module for the web interface is set to `pytest.mark.module_name`;
 - The name of the test cases for the web interface is set to `pytest.mark.case_name`;
 - An example of setting and updating a message for a web interface using `set_message`;
+- `test_3` depends on `test_minute_parity` from `test_2`. 
+Dependency is set to `pytest.mark.dependency`. 
+If `test_2::test_minute_parity` fails, `test_3` will be skipped
 
 ```python
 from time import sleep
@@ -167,13 +167,16 @@ from time import sleep
 import pytest
 import hardpy
 
-pytestmark = pytest.mark.module_name("End of testing")
+pytestmark = [
+    pytest.mark.module_name("End of testing"),
+    pytest.mark.dependency("test_2::test_minute_parity"),
+]
 
 @pytest.mark.case_name("Final case")
 def test_one():
     for i in range(5, 0, -1):
         hardpy.set_message(f"Time left until testing ends {i} s", "updated_status")
         sleep(1)
-    hardpy.set_message(f"Testing ended", "updated_status")
+    hardpy.set_message("Testing ended", "updated_status")
     assert True
 ```

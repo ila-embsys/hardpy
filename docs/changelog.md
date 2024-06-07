@@ -2,6 +2,17 @@
 
 Versions follow [Semantic Versioning](https://semver.org/): `<major>.<minor>.<patch>`.
 
+## HardPy 0.3.0
+
+* Add implementation of test dependencies without using third party plugins.
+* Reduce the number of database calls.
+* Speed up test collection.
+
+## HardPy 0.2.0
+
+* Add documentation site.
+* Remove the ability to access the HardpyPlugin. Users can now only register through the ini file.
+
 ## HardPy 0.1.0
 
 * Add pytest-hardpy and hardpy panel into one package.

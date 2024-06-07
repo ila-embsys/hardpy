@@ -36,11 +36,19 @@ methods = GET, PUT, POST, HEAD, DELETE
 credentials = true
 headers = accept, authorization, content-type, origin, referer, x-csrf-token
 ```
-2. Run the Docker container (from the folder with the couchdb.ini file):
+2. The Docker version must be 24.0.0 or higher. Run the Docker container (from the folder with the couchdb.ini file):
 
 ```bash
-docker run --name couchdb -p 5984:5984 -e COUCHDB_USER=dev -e COUCHDB_PASSWORD=dev -v ./couchdb.ini:/opt/couchdb/etc/local.ini couchdb:3.3
+docker run --rm --name couchdb -p 5984:5984 -e COUCHDB_USER=dev -e COUCHDB_PASSWORD=dev -v ./couchdb.ini:/opt/couchdb/etc/local.ini couchdb:3.3
 ```
+
+Command for Windows:
+
+```bash
+docker run --rm --name couchdb -p 5984:5984 -e COUCHDB_USER=dev -e COUCHDB_PASSWORD=dev -v .\couchdb.ini:/opt/couchdb/etc/local.ini couchdb:3.3.2
+```
+
+The container will be deleted after use.
 
 ### Running CouchDB with Docker Compose
 
@@ -105,7 +113,7 @@ Open it.
 8. First of all, in the `User Management` section in the `Create Admins` tab, create a user with the login `dev` and password `dev`
 9. In the `Config` choose `CORS` and appoint `Enable CORS` with `All domains`
 
-## To disable the CouchDB service:
+#### To disable the CouchDB service:
 
 Remove packages:
 ```bash
